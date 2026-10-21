@@ -2,10 +2,35 @@
 import { useState } from 'react'
 import './App.css'
 
+type Product = {
+  id: number
+  name: string
+  price: number
+  quantity: number
+}
+
 function App() {
   const [productName, setProductName] = useState('')
   const [price, setPrice] = useState('')
   const [quantity, setQuantity] = useState('')
+  const [products, setProducts] = useState<Product[]>([])
+
+  function handleAddProduct(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    const newProduct: Product = {
+      id: Date.now(),
+      name: productName,
+      price: Number(price),
+      quantity: Number(quantity),
+    }
+
+    setProducts((currentProducts) => [...currentProducts, newProduct])
+
+    setProductName('')
+    setPrice('')
+    setQuantity('')
+  }
 
   return (
     <div className="app">
@@ -21,15 +46,7 @@ function App() {
             <p>Enter the details of your product below.</p>
           </div>
 
-          <form
-            className="product-form"
-            onSubmit={(event) => {
-              event.preventDefault()
-              alert(
-                `Product: ${productName}\nPrice: ₱${price}\nQuantity: ${quantity}`,
-              )
-            }}
-          >
+          <form className="product-form" onSubmit={handleAddProduct}>
             <div className="form-group">
               <label htmlFor="productName">Product Name</label>
               <input
@@ -74,6 +91,37 @@ function App() {
               Add Product
             </button>
           </form>
+        </section>
+
+        <section className="products-section inventory-section">
+          <div className="section-heading">
+            <h2>My Products</h2>
+            <p>Products in your inventory: {products.length}</p>
+          </div>
+
+          {products.length === 0 ? (
+            <div className="empty-state">
+              <h3>No products yet</h3>
+              <p>Add a product using the form above.</p>
+            </div>
+          ) : (
+            <div className="product-list">
+              {products.map((product) => (
+                <div className="product-card" key={product.id}>
+                  <div>
+                    <h3>{product.name}</h3>
+                    <p>Quantity: {product.quantity}</p>
+                  </div>
+                  <strong>
+                    {product.price.toLocaleString('en-PH', {
+                      style: 'currency',
+                      currency: 'PHP',
+                    })}
+                  </strong>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
       </main>
     </div>
