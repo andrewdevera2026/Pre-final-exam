@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useState, type FormEvent } from 'react'
 import './App.css'
 
 type Product = {
@@ -14,19 +14,65 @@ function App() {
   const [price, setPrice] = useState('')
   const [quantity, setQuantity] = useState('')
   const [products, setProducts] = useState<Product[]>([])
+  const [editingId, setEditingId] = useState<number | null>(null)
 
-  function handleAddProduct(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    const newProduct: Product = {
-      id: Date.now(),
-      name: productName,
-      price: Number(price),
-      quantity: Number(quantity),
+    if (editingId !== null) {
+      setProducts((currentProducts) =>
+        currentProducts.map((product) =>
+          product.id === editingId
+            ? {
+                ...product,
+                name: productName,
+                price: Number(price),
+                quantity: Number(quantity),
+              }
+            : product,
+        ),
+      )
+      setEditingId(null)
+    } else {
+      const newProduct: Product = {
+        id: Date.now(),
+        name: productName,
+        price: Number(price),
+        quantity: Number(quantity),
+      }
+
+      setProducts((currentProducts) => [...currentProducts, newProduct])
     }
 
-    setProducts((currentProducts) => [...currentProducts, newProduct])
+    setProductName('')
+    setPrice('')
+    setQuantity('')
+  }
 
+  function handleEdit(product: Product) {
+    setProductName(product.name)
+    setPrice(String(product.price))
+    setQuantity(String(product.quantity))
+    setEditingId(product.id)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  function handleDelete(id: number) {
+    const confirmed = window.confirm('Are you sure you want to delete this product?')
+
+    if (!confirmed) return
+
+    setProducts((currentProducts) =>
+      currentProducts.filter((product) => product.id !== id),
+    )
+
+    if (editingId === id) {
+      cancelEdit()
+    }
+  }
+
+  function cancelEdit() {
+    setEditingId(null)
     setProductName('')
     setPrice('')
     setQuantity('')
@@ -42,11 +88,15 @@ function App() {
       <main className="container">
         <section className="products-section">
           <div className="section-heading">
-            <h2>Add a Product</h2>
-            <p>Enter the details of your product below.</p>
+            <h2>{editingId !== null ? 'Edit Product' : 'Add a Product'}</h2>
+            <p>
+              {editingId !== null
+                ? 'Update the product details below.'
+                : 'Enter the details of your product below.'}
+            </p>
           </div>
 
-          <form className="product-form" onSubmit={handleAddProduct}>
+          <form className="product-form" onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="productName">Product Name</label>
               <input
@@ -88,8 +138,18 @@ function App() {
             </div>
 
             <button type="submit" className="add-button">
-              Add Product
+              {editingId !== null ? 'Save Changes' : 'Add Product'}
             </button>
+
+            {editingId !== null && (
+              <button
+                type="button"
+                className="cancel-button"
+                onClick={cancelEdit}
+              >
+                Cancel Edit
+              </button>
+            )}
           </form>
         </section>
 
@@ -112,12 +172,31 @@ function App() {
                     <h3>{product.name}</h3>
                     <p>Quantity: {product.quantity}</p>
                   </div>
+
                   <strong>
                     {product.price.toLocaleString('en-PH', {
                       style: 'currency',
                       currency: 'PHP',
                     })}
                   </strong>
+
+                  <div className="product-actions">
+                    <button
+                      type="button"
+                      className="edit-button"
+                      onClick={() => handleEdit(product)}
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      type="button"
+                      className="delete-button"
+                      onClick={() => handleDelete(product.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
