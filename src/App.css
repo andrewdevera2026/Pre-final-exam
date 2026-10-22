@@ -53,3 +53,93 @@
 .add-button:active {
   transform: scale(0.99);
 }
+
+/* Commit 5: Design Improvements */
+
+.product-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.edit-button,
+.delete-button,
+.cancel-button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.edit-button {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.edit-button:hover {
+  background-color: #bfdbfe;
+}
+
+.delete-button {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.delete-button:hover {
+  background-color: #fecaca;
+}
+
+.cancel-button {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.cancel-button:hover {
+  background-color: #d1d5db;
+}
+
+.add-button:hover,
+.edit-button:hover,
+.delete-button:hover,
+.cancel-button:hover {
+  transform: translateY(-1px);
+}
+
+.add-button:focus-visible,
+.edit-button:focus-visible,
+.delete-button:focus-visible,
+.cancel-button:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 2px;
+}
+
+.product-card {
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.product-card:hover {
+  border-color: #bfdbfe;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 600px) {
+  .product-card {
+    align-items: stretch;
+  }
+
+  .product-actions {
+    width: 100%;
+  }
+
+  .product-actions button {
+    flex: 1;
+  }
+
+  .add-button,
+  .cancel-button {
+    width: 100%;
+  }
+}
