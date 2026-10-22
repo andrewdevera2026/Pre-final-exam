@@ -1,5 +1,91 @@
 
-/* Product Form */
+
+
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+.app-header {
+  background-color: #2563eb;
+  color: white;
+  padding: 32px 24px;
+}
+
+.app-header h1 {
+  margin: 0 0 8px;
+  font-size: 30px;
+}
+
+.app-header p {
+  margin: 0;
+  color: #dbeafe;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.products-section {
+  background-color: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.section-heading h2 {
+  margin: 0 0 8px;
+  font-size: 24px;
+}
+
+.section-heading p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.empty-state {
+  margin-top: 24px;
+  padding: 48px 16px;
+  text-align: center;
+  border: 2px dashed #d1d5db;
+  border-radius: 10px;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px;
+}
+
+.empty-state p {
+  margin: 0;
+  color: #6b7280;
+}
+
+@media (max-width: 600px) {
+  .app-header {
+    padding: 24px 16px;
+  }
+
+  .app-header h1 {
+    font-size: 24px;
+  }
+
+  .container {
+    padding: 20px 12px;
+  }
+
+  .products-section {
+    padding: 18px;
+  }
+}
+
 
 .product-form {
   display: flex;
